@@ -100,11 +100,11 @@ spec:
             allowedHosts:
               - github.com
   steps:
-    - id: create-repo
-      name: Create Repository
-      action: github:repo:create
-      input:
-        repoUrl: ${{ parameters.repoUrl }}
+    # - id: create-repo
+    #   name: Create Repository
+    #   action: github:repo:create
+    #   input:
+    #     repoUrl: ${{ parameters.repoUrl }}
     - id: fetch-base
       name: Fetch Base
       action: fetch:template
@@ -116,18 +116,18 @@ spec:
           tfVars: ${{ parameters.tfVars }}
           adminRoleName: ${{parameters.adminRoleName}}
           clusterName: ${{ parameters.clusterName }}
-    - id: init-repo
-      name: Initialize Repository
-      action: github:repo:push
-      input:
-        repoUrl: ${{ parameters.repoUrl }}
-        defaultBranch: main
-    - id: register
-      name: Register
-      action: catalog:register
-      input:
-        repoContentsUrl: ${{ steps['init-repo'].output.repoContentsUrl }}
-        catalogInfoPath: '/catalog-info.yaml'
+    # - id: init-repo
+    #   name: Initialize Repository
+    #   action: github:repo:push
+    #   input:
+    #     repoUrl: ${{ parameters.repoUrl }}
+    #     defaultBranch: main
+    # - id: register
+    #   name: Register
+    #   action: catalog:register
+    #   input:
+    #     repoContentsUrl: ${{ steps['init-repo'].output.repoContentsUrl }}
+    #     catalogInfoPath: '/catalog-info.yaml'
     - id: apply-cm
       name: Apply TF variables CM
       action: cnoe:kubernetes:apply
