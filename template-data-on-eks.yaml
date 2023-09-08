@@ -100,11 +100,11 @@ spec:
             allowedHosts:
               - github.com
   steps:
-    - id: create-repo
-      name: Create Repository
-      action: github:repo:create
-      input:
-        repoUrl: ${{ parameters.repoUrl }}
+    # - id: create-repo
+    #   name: Create Repository
+    #   action: github:repo:create
+    #   input:
+    #     repoUrl: ${{ parameters.repoUrl }}
     - id: fetch-base
       name: Fetch Base
       action: fetch:template
