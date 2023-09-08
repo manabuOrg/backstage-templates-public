@@ -128,12 +128,6 @@ spec:
       input:
         repoContentsUrl: ${{ steps['init-repo'].output.repoContentsUrl }}
         catalogInfoPath: '/catalog-info.yaml'
-    - id: register
-      name: Register
-      action: catalog:register
-      input:
-        repoContentsUrl: ${{ steps['init-repo'].output.repoContentsUrl }}
-        catalogInfoPath: '/catalog-info.yaml'
     - id: apply-cm
       name: Apply TF variables CM
       action: cnoe:kubernetes:apply
