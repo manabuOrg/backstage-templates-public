@@ -133,20 +133,20 @@ spec:
     #   input:
     #     repoContentsUrl: ${{ steps['init-repo'].output.repoContentsUrl }}
     #     catalogInfoPath: '/catalog-info.yaml'
-    # - id: apply-cm
-    #   name: Apply TF variables CM
-    #   action: cnoe:kubernetes:apply
-    #   input:
-    #     manifestPath: cm.yaml
-    #     namespaced: true
-    #     clusterName: ${{ parameters.clusterName }}
-    - id: apply-workflow
+    - id: apply-cm
       name: Apply TF variables CM
       action: cnoe:kubernetes:apply
       input:
-        manifestPath: workflow.yaml
+        manifestPath: cm.yaml
         namespaced: true
         clusterName: ${{ parameters.clusterName }}
+    # - id: apply-workflow
+    #   name: Start TF workflow
+    #   action: cnoe:kubernetes:apply
+    #   input:
+    #     manifestPath: workflow.yaml
+    #     namespaced: true
+    #     clusterName: ${{ parameters.clusterName }}
   output:
     links:
       - title: Open in catalog
