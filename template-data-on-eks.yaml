@@ -100,11 +100,11 @@ spec:
             allowedHosts:
               - github.com
   steps:
-    - id: create-repo
-      name: Create Repository
-      action: github:repo:create
-      input:
-        repoUrl: ${{ parameters.repoUrl }}
+    # - id: create-repo
+    #   name: Create Repository
+    #   action: github:repo:create
+    #   input:
+    #     repoUrl: ${{ parameters.repoUrl }}
     - id: fetch-base
       name: Fetch Base
       action: fetch:template
@@ -116,30 +116,30 @@ spec:
           tfVars: ${{ parameters.tfVars }}
           adminRoleName: ${{parameters.adminRoleName}}
           clusterName: ${{ parameters.clusterName }}
-    - id: init-repo
-      name: Initialize Repository
-      action: github:repo:push
-      input:
-        repoUrl: ${{ parameters.repoUrl }}
-        defaultBranch: main
-    - id: wait
-      name: Waiting for Repo to be ready
-      action: "roadiehq:utils:sleep"
-      input:
-        amount: 10
-    - id: register
-      name: Register
-      action: catalog:register
-      input:
-        repoContentsUrl: ${{ steps['init-repo'].output.repoContentsUrl }}
-        catalogInfoPath: '/catalog-info.yaml'
-    - id: apply-cm
-      name: Apply TF variables CM
-      action: cnoe:kubernetes:apply
-      input:
-        manifestPath: cm.yaml
-        namespaced: true
-        clusterName: ${{ parameters.clusterName }}
+    # - id: init-repo
+    #   name: Initialize Repository
+    #   action: github:repo:push
+    #   input:
+    #     repoUrl: ${{ parameters.repoUrl }}
+    #     defaultBranch: main
+    # - id: wait
+    #   name: Waiting for Repo to be ready
+    #   action: "roadiehq:utils:sleep"
+    #   input:
+    #     amount: 10
+    # - id: register
+    #   name: Register
+    #   action: catalog:register
+    #   input:
+    #     repoContentsUrl: ${{ steps['init-repo'].output.repoContentsUrl }}
+    #     catalogInfoPath: '/catalog-info.yaml'
+    # - id: apply-cm
+    #   name: Apply TF variables CM
+    #   action: cnoe:kubernetes:apply
+    #   input:
+    #     manifestPath: cm.yaml
+    #     namespaced: true
+    #     clusterName: ${{ parameters.clusterName }}
     - id: apply-workflow
       name: Apply TF variables CM
       action: cnoe:kubernetes:apply
