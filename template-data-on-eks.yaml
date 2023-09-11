@@ -125,8 +125,8 @@ spec:
     - id: wait
       name: Waiting for Repo to be ready
       action: "roadiehq:utils:sleep"
-        input:
-          amount: 10
+      input:
+        amount: 10
     - id: register
       name: Register
       action: catalog:register
