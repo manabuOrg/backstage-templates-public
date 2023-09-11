@@ -124,7 +124,7 @@ spec:
         defaultBranch: main
     - id: wait
       name: Waiting for Repo to be ready
-      action: roadiehq:utils:sleep
+      action: "roadiehq:utils:sleep"
         input:
           amount: 10
     - id: register
