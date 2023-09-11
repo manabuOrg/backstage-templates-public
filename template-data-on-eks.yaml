@@ -122,6 +122,11 @@ spec:
       input:
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: main
+    - id: wait
+      name: Waiting for Repo to be ready
+      action: roadiehq:utils:sleep
+        input:
+          amount: 10
     - id: register
       name: Register
       action: catalog:register
@@ -142,4 +147,8 @@ spec:
         manifestPath: workflow.yaml
         namespaced: true
         clusterName: ${{ parameters.clusterName }}
-
+  output:
+    links:
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps['register'].output.entityRef }}
