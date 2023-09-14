@@ -63,7 +63,7 @@ spec:
       name: Fetch Base
       action: fetch:template
       input:
-        url: ./templates/
+        url: ./templates-job/
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}

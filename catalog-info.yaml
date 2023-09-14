@@ -7,4 +7,4 @@ spec:
   targets:
     - ./template-data-on-eks.yaml
     - ./spark/template-job.yaml
-
+    - ./spark/template-sa.yaml
