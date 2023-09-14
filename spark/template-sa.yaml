@@ -32,11 +32,24 @@ spec:
         url: ./templates-sa/
         values:
           namespace: ${{ parameters.namespace }}
-    
-    - id: apply
+    - id: apply-sa
       name: apply manifest
       action: cnoe:kubernetes:apply
       input:
         manifestPath: sa.yaml
+        namespaced: true
+        clusterName: ${{ parameters.clusterName }}
+    - id: apply-role
+      name: apply manifest
+      action: cnoe:kubernetes:apply
+      input:
+        manifestPath: role.yaml
+        namespaced: true
+        clusterName: ${{ parameters.clusterName }}
+    - id: apply-role-binding
+      name: apply manifest
+      action: cnoe:kubernetes:apply
+      input:
+        manifestPath: rolebinding.yaml
         namespaced: true
         clusterName: ${{ parameters.clusterName }}
