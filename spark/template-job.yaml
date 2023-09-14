@@ -105,6 +105,11 @@ spec:
       input:
         path: input.json
         content: ${{ steps.parseMerge.output.content }}
+    - id: wait
+      name: Waiting for the repo to be ready
+      action: "roadiehq:utils:sleep"
+      input:
+        amount: 55
     - id: apply
       name: apply manifest
       action: cnoe:kubernetes:apply
