@@ -123,10 +123,10 @@ spec:
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: main
     - id: wait
-      name: Waiting for Repo to be ready
+      name: Waiting for the repo to be ready
       action: "roadiehq:utils:sleep"
       input:
-        amount: 10
+        amount: 5
     - id: register
       name: Register
       action: catalog:register

@@ -6,4 +6,5 @@ metadata:
 spec:
   targets:
     - ./template-data-on-eks.yaml
+    - ./spark/template-job.yaml
 
