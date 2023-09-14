@@ -33,21 +33,21 @@ spec:
         values:
           namespace: ${{ parameters.namespace }}
     - id: apply-sa
-      name: apply manifest
+      name: apply sa
       action: cnoe:kubernetes:apply
       input:
         manifestPath: sa.yaml
         namespaced: true
         clusterName: ${{ parameters.clusterName }}
     - id: apply-role
-      name: apply manifest
+      name: apply role
       action: cnoe:kubernetes:apply
       input:
         manifestPath: role.yaml
         namespaced: true
         clusterName: ${{ parameters.clusterName }}
     - id: apply-role-binding
-      name: apply manifest
+      name: apply role binding
       action: cnoe:kubernetes:apply
       input:
         manifestPath: rolebinding.yaml
