@@ -7,6 +7,40 @@ metadata:
 spec:
   owner: guest
   parameters:
+    - properties:
+        name:
+          title: Application Name
+          type: string
+          description: Unique name of the component
+          ui:autofocus: true
+        owner:
+          title: Owner
+          type: string
+          default: guest
+          description: Owner of the component
+          ui:field: OwnerPicker
+          ui:options:
+            catalogFilter:
+              kind: Group
+        labels:
+          title: Labels
+          type: object
+          additionalProperties:
+            type: string
+          description: Labels to apply to the application
+          ui:autofocus: true
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+            # allowedOwners:
+            #   - myorg
+      required:
+        - repoUrl
+      title: Choose your repository location
     - dependencies:
         resources:
           oneOf:
@@ -52,26 +86,29 @@ spec:
         - awsResources
         - name
       title: Choose AWS Resources
-    - properties:
-        repoUrl:
-          title: Repository Location
-          type: string
-          ui:field: RepoUrlPicker
-          ui:options:
-            allowedHosts:
-              - github.com
-            allowedOwners:
-              - manabuOrg
-      required:
-        - repoUrl
-      title: Choose your repository location
   steps:
+    - id: create-repo
+      name: Create Repository
+      action: github:repo:create
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+    - id: fetch-base
+      name: Fetch Base
+      action: fetch:template
+      input:
+        url: ./templates
+        values:
+          name: ${{ parameters.name }}
+          labels: ${{ parameters.labels }}
+          repoUrl: ${{ parameters.repoUrl }}
+          owner: ${{ parameters.owner }}
+          remoteUrl: ${{ steps['create-repo'].output.remoteUrl }}
     - action: roadiehq:utils:serialize:yaml
       id: serialize
       input:
         data:
           apiVersion: awsblueprints.io/v1alpha1
-          kind: ${{ parameters.awsResources }}
+          kind: ${{ parameters.resources }}
           metadata:
             name: ${{ parameters.name }}
           spec: ${{ parameters.config }}
@@ -80,15 +117,23 @@ spec:
       id: write
       input:
         content: ${{ steps['serialize'].output.serialized }}
-        path: ${{ parameters.path }}/${{ parameters.name }}.yaml
+        path: kustomize/base/${{ parameters.name }}.yaml
       name: write-to-file
-    - action: publish:github:pull-request
-      id: pullRequest
+    - id: init-repo
+      name: Initialize Repository
+      action: github:repo:push
       input:
-        branchName: ${{ parameters.name }}-${{ parameters.awsResources}}-${{ user.entity.metadata.name }}
-        description: Add ${{ parameters.awsResources}}
         repoUrl: ${{ parameters.repoUrl }}
-        sourcePath: ./
-        title: Add ${{ parameters.awsResources}}
-      name: create-PR
+        defaultBranch: main
+    - id: wait
+      name: Waiting for the repo to be ready
+      action: "roadiehq:utils:sleep"
+      input:
+        amount: 5
+    - id: register
+      name: Register
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['init-repo'].output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
   type: service
