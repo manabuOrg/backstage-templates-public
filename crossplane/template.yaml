@@ -62,10 +62,6 @@ spec:
         name:
           description: name of this resource. This will be the name of K8s object.
           type: string
-        path:
-          default: kustomize/base
-          description: path to place this file into
-          type: string
         resources:
           enum:
             - awsblueprints.io.subscriptionfilter
@@ -83,7 +79,7 @@ spec:
             - awsblueprints.io.queue
           type: string
       required:
-        - awsResources
+        - resources
         - name
       title: Choose AWS Resources
   steps:
